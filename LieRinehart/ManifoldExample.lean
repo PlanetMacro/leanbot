@@ -21,15 +21,18 @@ anchor = id : L →ₗ[A] Derivation ℝ A A
 noncomputable def ManifoldExample {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
   {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I (∞ : WithTop ℕ∞) M] :
-  LieRinehart
+ LieRinehart
     ℝ
     (C^∞⟮I, M; 𝓘(ℝ), ℝ⟯)
     (Derivation ℝ (C^∞⟮I, M; 𝓘(ℝ), ℝ⟯) (C^∞⟮I, M; 𝓘(ℝ), ℝ⟯)) :=
 {  ρ := LinearMap.id,
    anchor_lie := by
-    /- Goal: ∀ (x y : Derivation ℝ C^∞⟮I, M; 𝓘(ℝ, ℝ), ℝ⟯ C^∞⟮I, M; 𝓘(ℝ, ℝ), ℝ⟯),
-  LinearMap.id ⁅x, y⁆ = ⁅LinearMap.id x, LinearMap.id y⁆ -/
-    -- We need a theorem, that the identity map on derivations commutates with the
-    -- Lie bracket
-   ,
-   leibniz := by sorry -- WE KEEP THIS FOR NOW AS SORRY; FOCUSSING ON THE FIRST}
+    intro x y
+    simp,
+   leibniz := by
+    intro x y a
+    ext b p
+    -- Expand the commutator and module actions pointwise on `p`.
+    simp [Derivation.commutator_apply, Derivation.smul_apply, sub_eq_add_neg, x.leibniz]
+    ring
+}
